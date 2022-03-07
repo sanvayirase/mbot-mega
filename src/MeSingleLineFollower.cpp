@@ -1,8 +1,8 @@
 /**
  * \par Copyright (C), 2012-2016, MakeBlock
- * \class MeBarrierSensor
+ * \class MeSingleLineFollower
  * \brief   Driver for Me line follwer device.
- * @file    MeBarrierSensor.cpp
+ * @file    MeSingleLineFollower.cpp
  * @author  MakeBlock
  * @version V1.0.0
  * @date    2021/03/24
@@ -27,20 +27,21 @@
  *
  * \par Method List:
  *
- *    1. void MeBarrierSensor::setpin(uint8_t SensorPin)
- *    2. uint8_t MeBarrierSensor::readSensor(void)
- *    3. bool MeBarrierSensor::isBarried(void)
+ *    1. void MeSingleLineFollower::setpin(uint8_t SensorPin)
+ *    2. uint8_t MeSingleLineFollower::readSensor(void)
+ *    3. bool MeSingleLineFollower::onLine(void)
+ *    4. bool MeSingleLineFollower::onBackground(void)
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * huyisi         2021/03/24     1.0.0            build the new.
+ * huyisi            2021/03/24         1.0.0            build the new.
  * </pre>
  *
  * @example LineFollowerTest.ino
  */
 
-#include "MeBarrierSensor.h"
+#include "MeSingleLineFollower.h"
 
 
 /**
@@ -57,7 +58,7 @@
  * \par Others
  *   None
  */
-MeBarrierSensor::MeBarrierSensor(uint8_t SensorPin)
+MeSingleLineFollower::MeSingleLineFollower(uint8_t SensorPin)
 {
   _SensorPin = SensorPin;
   pinMode(_SensorPin,INPUT);
@@ -78,7 +79,7 @@ MeBarrierSensor::MeBarrierSensor(uint8_t SensorPin)
  * \par Others
  *   None
  */
-void MeBarrierSensor::setpin(uint8_t SensorPin)
+void MeSingleLineFollower::setpin(uint8_t SensorPin)
 {
   _SensorPin = SensorPin;
   pinMode(_SensorPin,INPUT);
@@ -92,12 +93,12 @@ void MeBarrierSensor::setpin(uint8_t SensorPin)
  * \par Output
  *   None
  * \return
- *   0: sensor1 is Barried \n
- *   1: sensor1 is not Barried 
+ *   0: sensor1 is outside of black line \n
+ *   1: sensor1 is inside of black line
  * \par Others
  *   None
  */
-bool MeBarrierSensor::readSensor(void)
+bool MeSingleLineFollower::readSensor(void)
 {
   return digitalRead(_SensorPin);
 }
@@ -106,16 +107,16 @@ bool MeBarrierSensor::readSensor(void)
  * \par Function
  *   onLine
  * \par Description
- *   Get the sensors state.
+ *   Get the sensors1(left sensors) state.
  * \par Output
  *   None
  * \return
- *   true: sensor is Barried \n
- *   false: sensor is not Barried
+ *   true: sensor1 is on black line \n
+ *   false: sensor1 is outside of black line
  * \par Others
  *   None
  */
-bool MeBarrierSensor::isBarried(void)
+bool MeSingleLineFollower::onLine(void)
 {
   if(digitalRead(_SensorPin))
   {
@@ -127,4 +128,28 @@ bool MeBarrierSensor::isBarried(void)
   }
 }
 
+/**
+ * \par Function
+ *   onBackground
+ * \par Description
+ *   Get the sensors state.
+ * \par Output
+ *   None
+ * \return
+ *   true: sensor1 is inside of background \n
+ *   false: sensor1 is outside of background
+ * \par Others
+ *   None
+ */
+bool MeSingleLineFollower::onBackground(void)
+{
+  if(digitalRead(_SensorPin))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 

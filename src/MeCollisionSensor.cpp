@@ -1,8 +1,8 @@
 /**
  * \par Copyright (C), 2012-2016, MakeBlock
- * \class MeBarrierSensor
+ * \class MeCollisionSensor
  * \brief   Driver for Me line follwer device.
- * @file    MeBarrierSensor.cpp
+ * @file    MeCollisionSensor.cpp
  * @author  MakeBlock
  * @version V1.0.0
  * @date    2021/03/24
@@ -27,9 +27,9 @@
  *
  * \par Method List:
  *
- *    1. void MeBarrierSensor::setpin(uint8_t SensorPin)
- *    2. uint8_t MeBarrierSensor::readSensor(void)
- *    3. bool MeBarrierSensor::isBarried(void)
+ *    1. void MeCollisionSensor::setpin(uint8_t SensorPin)
+ *    2. uint8_t MeCollisionSensor::readSensor(void)
+ *    3. bool MeCollisionSensor::isCollision(void)
  *
  * \par History:
  * <pre>
@@ -40,7 +40,7 @@
  * @example LineFollowerTest.ino
  */
 
-#include "MeBarrierSensor.h"
+#include "MeCollisionSensor.h"
 
 
 /**
@@ -57,7 +57,7 @@
  * \par Others
  *   None
  */
-MeBarrierSensor::MeBarrierSensor(uint8_t SensorPin)
+MeCollisionSensor::MeCollisionSensor(uint8_t SensorPin)
 {
   _SensorPin = SensorPin;
   pinMode(_SensorPin,INPUT);
@@ -78,7 +78,7 @@ MeBarrierSensor::MeBarrierSensor(uint8_t SensorPin)
  * \par Others
  *   None
  */
-void MeBarrierSensor::setpin(uint8_t SensorPin)
+void MeCollisionSensor::setpin(uint8_t SensorPin)
 {
   _SensorPin = SensorPin;
   pinMode(_SensorPin,INPUT);
@@ -92,12 +92,12 @@ void MeBarrierSensor::setpin(uint8_t SensorPin)
  * \par Output
  *   None
  * \return
- *   0: sensor1 is Barried \n
- *   1: sensor1 is not Barried 
+ *   0: sensor is Collision \n
+ *   1: sensor is not Collision
  * \par Others
  *   None
  */
-bool MeBarrierSensor::readSensor(void)
+bool MeCollisionSensor::readSensor(void)
 {
   return digitalRead(_SensorPin);
 }
@@ -110,12 +110,12 @@ bool MeBarrierSensor::readSensor(void)
  * \par Output
  *   None
  * \return
- *   true: sensor is Barried \n
- *   false: sensor is not Barried
+ *   true: sensor is Collision \n
+ *   false: sensor is not Collision
  * \par Others
  *   None
  */
-bool MeBarrierSensor::isBarried(void)
+bool MeCollisionSensor::isCollision(void)
 {
   if(digitalRead(_SensorPin))
   {

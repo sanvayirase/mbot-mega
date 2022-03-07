@@ -1,12 +1,12 @@
 /**
  * \par Copyright (C), 2012-2016, MakeBlock
- * \class MeBarrierSensor
- * \brief   Driver for Me line follwer device.
- * @file    MeBarrierSensor.cpp
+ * \class   MeCollisionSensor
+ * \brief   Driver for MeCollisionSensor module.
+ * @file    MeCollisionSensor.h
  * @author  MakeBlock
  * @version V1.0.0
  * @date    2021/03/24
- * @brief   Driver for Me line follwer device.
+ * @brief   Header for MeCollisionSensor.cpp.
  *
  * \par Copyright
  * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
@@ -21,15 +21,12 @@
  * distributed. See http://www.gnu.org/copyleft/gpl.html
  *
  * \par Description
- * This file is a drive for Me line follwer device, It supports line follwer device
- * V2.2 provided by the MakeBlock. The line follwer used Infrared Tube to Use infrared
- * receiver and transmitter to detect the black line.
  *
  * \par Method List:
  *
- *    1. void MeBarrierSensor::setpin(uint8_t SensorPin)
- *    2. uint8_t MeBarrierSensor::readSensor(void)
- *    3. bool MeBarrierSensor::isBarried(void)
+ *    1. void MeCollisionSensor::setpin(uint8_t SensorPin)
+ *    2. uint8_t MeCollisionSensor::readSensor(void)
+ *    3. bool MeCollisionSensor::isCollision(void)
  *
  * \par History:
  * <pre>
@@ -37,11 +34,35 @@
  * huyisi         2021/03/24     1.0.0            build the new.
  * </pre>
  *
- * @example LineFollowerTest.ino
  */
 
-#include "MeBarrierSensor.h"
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef MeCollisionSensor_H
+#define MeCollisionSensor_H
 
+/* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
+#include <stdbool.h>
+#include <Arduino.h>
+#include "MeConfig.h"
+
+#ifdef ME_PORT_DEFINED
+#include "MePort.h"
+#endif // ME_PORT_DEFINED
+
+/* Exported classes ----------------------------------------------------------*/
+/**
+ * Class: MeCollisionSensor
+ * \par Description
+ * Declaration of Class MeCollisionSensor.
+ */
+#ifndef ME_PORT_DEFINED
+class MeCollisionSensor
+#else // !ME_PORT_DEFINED
+class MeCollisionSensor : public MePort
+#endif  // !ME_PORT_DEFINED
+{
+public:
 
 /**
  * \par Function
@@ -57,32 +78,23 @@
  * \par Others
  *   None
  */
-MeBarrierSensor::MeBarrierSensor(uint8_t SensorPin)
-{
-  _SensorPin = SensorPin;
-  pinMode(_SensorPin,INPUT);
-}
-
+ MeCollisionSensor(uint8_t SensorPin);
 
 /**
  * \par Function
- *   setpin
+ *    setpin
  * \par Description
- *   Reset the line follwer device available PIN by its arduino port.
+ *    Reset the limit switch available PIN by its arduino port.
  * \param[in]
- *   SensorPin - arduino port(should digital pin)
+ *    switchPin - arduino port for switch detect pin.
  * \par Output
- *   None
- * \return
- *   None
+ *    None
+ * \par Return
+ *    None
  * \par Others
- *   None
+ *    None
  */
-void MeBarrierSensor::setpin(uint8_t SensorPin)
-{
-  _SensorPin = SensorPin;
-  pinMode(_SensorPin,INPUT);
-}
+  void setpin(uint8_t switchPin);
 
 /**
  * \par Function
@@ -92,15 +104,12 @@ void MeBarrierSensor::setpin(uint8_t SensorPin)
  * \par Output
  *   None
  * \return
- *   0: sensor1 is Barried \n
- *   1: sensor1 is not Barried 
+ *   0: sensor is Collision \n
+ *   1: sensor is not Collision
  * \par Others
  *   None
  */
-bool MeBarrierSensor::readSensor(void)
-{
-  return digitalRead(_SensorPin);
-}
+  bool readSensor(void);
 
 /**
  * \par Function
@@ -110,21 +119,14 @@ bool MeBarrierSensor::readSensor(void)
  * \par Output
  *   None
  * \return
- *   true: sensor is Barried \n
- *   false: sensor is not Barried
+ *   true: sensor is Collision \n
+ *   false: sensor is not Collision
  * \par Others
  *   None
  */
-bool MeBarrierSensor::isBarried(void)
-{
-  if(digitalRead(_SensorPin))
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
-}
+ bool isCollision(void);
 
-
+private:
+  uint8_t _SensorPin;
+};
+#endif
